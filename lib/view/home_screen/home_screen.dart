@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:to_do_app/controller/home_screen_controller.dart';
 
@@ -31,49 +33,57 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Todo App", style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.deepOrange,
-          bottom: TabBar(
-            tabAlignment: TabAlignment.center,
-            unselectedLabelColor: Colors.grey,
-
-            isScrollable: true,
-            indicatorPadding: EdgeInsets.zero,
-            labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            indicator: BoxDecoration(
-              color: Colors.deepOrange,
-              borderRadius: BorderRadius.circular(100),
+          toolbarHeight: 70,
+          title: Text(
+            "Todo App",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
             ),
-            labelColor: Colors.white,
-            dividerHeight: 0,
-            indicatorSize: TabBarIndicatorSize.label,
-            tabs: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.deepOrange),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Tab(text: "  All  ", height: 30),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.deepOrange),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Tab(text: "Pending", height: 30),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.deepOrange),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Tab(text: "Completed", height: 30),
-              ),
-            ],
           ),
+          backgroundColor: Colors.deepOrange,
+          // bottom: TabBar(
+          //   tabAlignment: TabAlignment.center,
+          //   unselectedLabelColor: Colors.grey,
+
+          //   isScrollable: true,
+          //   indicatorPadding: EdgeInsets.zero,
+          //   labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          //   indicator: BoxDecoration(
+          //     color: Colors.deepOrange,
+          //     borderRadius: BorderRadius.circular(100),
+          //   ),
+          //   labelColor: Colors.white,
+          //   dividerHeight: 0,
+          //   indicatorSize: TabBarIndicatorSize.label,
+          //   tabs: [
+          //     Container(
+          //       padding: EdgeInsets.symmetric(horizontal: 10),
+          //       decoration: BoxDecoration(
+          //         border: Border.all(color: Colors.deepOrange),
+          //         borderRadius: BorderRadius.circular(100),
+          //       ),
+          //       child: Tab(text: "  All  ", height: 30),
+          //     ),
+          //     Container(
+          //       padding: EdgeInsets.symmetric(horizontal: 10),
+          //       decoration: BoxDecoration(
+          //         border: Border.all(color: Colors.deepOrange),
+          //         borderRadius: BorderRadius.circular(100),
+          //       ),
+          //       child: Tab(text: "Pending", height: 30),
+          //     ),
+          //     Container(
+          //       padding: EdgeInsets.symmetric(horizontal: 10),
+          //       decoration: BoxDecoration(
+          //         border: Border.all(color: Colors.deepOrange),
+          //         borderRadius: BorderRadius.circular(100),
+          //       ),
+          //       child: Tab(text: "Completed", height: 30),
+          //     ),
+          //   ],
+          // ),
         ),
         body: Column(children: [SizedBox(height: 10), _buildTaskTiles()]),
         floatingActionButton: FloatingActionButton(
@@ -94,171 +104,200 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder:
             (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CheckboxListTile(
-                activeColor: Color(0xff2ecc71),
-                side: BorderSide(color: Color(0xff4a90e2)),
-                checkColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: CheckboxListTile(
+                  activeColor: Color(0xff2ecc71),
+                  side: BorderSide(color: Color(0xff4a90e2)),
+                  checkColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
 
-                tileColor:
-                    HomeScreenController.checkOverDue(
-                                  HomeScreenController.todoList[index]['date'],
-                                ) ==
-                                "Overdue" &&
-                            HomeScreenController.todoList[index]["status"] ==
-                                "pending"
-                        ? Color(0xffFDEDEC)
-                        : HomeScreenController.checkOverDue(
-                                  HomeScreenController.todoList[index]['date'],
-                                ) ==
-                                "Due Today" &&
-                            HomeScreenController.todoList[index]["status"] ==
-                                "pending"
-                        ? Color(0xffFFF3E0)
-                        : HomeScreenController.checkOverDue(
-                                  HomeScreenController.todoList[index]['date'],
-                                ) ==
-                                "Tomorrow" &&
-                            HomeScreenController.todoList[index]["status"] ==
-                                "pending"
-                        ? Color(0xffF5F0F7)
-                        : HomeScreenController.checkOverDue(
-                                  HomeScreenController.todoList[index]['date'],
-                                ) ==
-                                "Upcoming" &&
-                            HomeScreenController.todoList[index]["status"] ==
-                                "pending"
-                        ? Color(0xffEAF4FD)
-                        : Color(0xfff7f7f7),
-
-                value:
-                    HomeScreenController.todoList[index]["status"] ==
-                            "completed"
-                        ? true
-                        : false,
-                onChanged: (value) async {
-                  String newStatus = value! ? "completed" : "pending";
-                  await HomeScreenController.updateTask(
-                    HomeScreenController.todoList[index]['id'],
-                    newStatus,
-                  );
-                  HomeScreenController.checkOverDue(
-                    HomeScreenController.todoList[index]['date'],
-                  );
-                  setState(() {});
-                },
-                title: Row(
-                  children: [
-                    Text(
-                      HomeScreenController.todoList[index]['task'] ?? "Todo",
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        decorationColor: Color(0xff2ecc71),
-                        decoration:
-                            HomeScreenController.todoList[index]["status"] ==
-                                    "completed"
-                                ? TextDecoration.lineThrough
-                                : null,
-                      ),
-                    ),
-                    Text(
-                      HomeScreenController.todoList[index]["status"] ==
-                              "completed"
-                          ? ""
-                          : " • ",
-                      style: TextStyle(fontSize: 30, color: Color(0xff4A90E2)),
-                    ),
-                    Text(
-                      HomeScreenController.todoList[index]["status"] ==
-                              "completed"
-                          ? ""
+                  tileColor:
+                      HomeScreenController.checkOverDue(
+                                    HomeScreenController
+                                        .todoList[index]['date'],
+                                  ) ==
+                                  "Overdue" &&
+                              HomeScreenController.todoList[index]["status"] ==
+                                  "pending"
+                          ? Color(0xffFDEDEC)
                           : HomeScreenController.checkOverDue(
-                            HomeScreenController.todoList[index]['date'],
-                          ),
-                      style: TextStyle(
-                        color:
-                            HomeScreenController.checkOverDue(
-                                      HomeScreenController
-                                          .todoList[index]['date'],
-                                    ) ==
-                                    "Overdue"
-                                ? Color(0xffE74C3C)
-                                : HomeScreenController.checkOverDue(
-                                      HomeScreenController
-                                          .todoList[index]['date'],
-                                    ) ==
-                                    "Due Today"
-                                ? Color(0xffFF5722)
-                                : HomeScreenController.checkOverDue(
-                                      HomeScreenController
-                                          .todoList[index]['date'],
-                                    ) ==
-                                    "Tomorrow"
-                                ? Color(0xff9B59B6)
-                                : Color(0xff4A90E2),
-                      ),
-                    ),
-                  ],
-                ),
-                subtitle: Expanded(
-                  child: Row(
+                                    HomeScreenController
+                                        .todoList[index]['date'],
+                                  ) ==
+                                  "Due Today" &&
+                              HomeScreenController.todoList[index]["status"] ==
+                                  "pending"
+                          ? Color(0xffFFF3E0)
+                          : HomeScreenController.checkOverDue(
+                                    HomeScreenController
+                                        .todoList[index]['date'],
+                                  ) ==
+                                  "Tomorrow" &&
+                              HomeScreenController.todoList[index]["status"] ==
+                                  "pending"
+                          ? Color(0xffF5F0F7)
+                          : HomeScreenController.checkOverDue(
+                                    HomeScreenController
+                                        .todoList[index]['date'],
+                                  ) ==
+                                  "Upcoming" &&
+                              HomeScreenController.todoList[index]["status"] ==
+                                  "pending"
+                          ? Color(0xffEAF4FD)
+                          : Color(0xfff7f7f7),
+
+                  value:
+                      HomeScreenController.todoList[index]["status"] ==
+                              "completed"
+                          ? true
+                          : false,
+                  onChanged: (value) async {
+                    String newStatus = value! ? "completed" : "pending";
+                    await HomeScreenController.updateTask(
+                      HomeScreenController.todoList[index]['id'],
+                      newStatus,
+                    );
+                    HomeScreenController.checkOverDue(
+                      HomeScreenController.todoList[index]['date'],
+                    );
+                    setState(() {});
+                  },
+                  title: Row(
                     children: [
                       Text(
-                        HomeScreenController.todoList[index]['date'],
-                        style: TextStyle(color: Color(0xff666666)),
+                        HomeScreenController.todoList[index]['task'] ?? "Todo",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff333333),
+                          decorationColor: Colors.deepOrange,
+                          decoration:
+                              HomeScreenController.todoList[index]["status"] ==
+                                      "completed"
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                        ),
                       ),
-                      SizedBox(width: 5),
                       Text(
-                        " • ",
+                        HomeScreenController.todoList[index]["status"] ==
+                                "completed"
+                            ? ""
+                            : " • ",
                         style: TextStyle(
                           fontSize: 30,
                           color: Color(0xff4A90E2),
                         ),
                       ),
-                      SizedBox(width: 5),
                       Text(
-                        HomeScreenController.todoList[index]['priority'] ?? "",
+                        HomeScreenController.todoList[index]["status"] ==
+                                "completed"
+                            ? ""
+                            : HomeScreenController.checkOverDue(
+                              HomeScreenController.todoList[index]['date'],
+                            ),
                         style: TextStyle(
                           color:
-                              HomeScreenController
-                                          .todoList[index]['priority'] ==
-                                      "High Priority"
-                                  ? Color(0xff8E44AD)
-                                  : HomeScreenController
-                                          .todoList[index]['priority'] ==
-                                      "Medium Priority"
+                              HomeScreenController.checkOverDue(
+                                        HomeScreenController
+                                            .todoList[index]['date'],
+                                      ) ==
+                                      "Overdue"
+                                  ? Color(0xffE74C3C)
+                                  : HomeScreenController.checkOverDue(
+                                        HomeScreenController
+                                            .todoList[index]['date'],
+                                      ) ==
+                                      "Due Today"
+                                  ? Color(0xffFF5722)
+                                  : HomeScreenController.checkOverDue(
+                                        HomeScreenController
+                                            .todoList[index]['date'],
+                                      ) ==
+                                      "Tomorrow"
                                   ? Color(0xff9B59B6)
-                                  : HomeScreenController
-                                          .todoList[index]['priority'] ==
-                                      "Low Priority"
-                                  ? Color(0xffBB8FCE)
-                                  : Colors.grey,
+                                  : Color(0xff4A90E2),
+                          fontWeight: FontWeight.w600,
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          var taskId =
-                              HomeScreenController.todoList[index]['id'];
-                          await _buildBottomSheet(
-                            context,
-                            task: HomeScreenController.todoList[index],
-                          );
-                        },
-                        icon: Icon(Icons.edit, color: Color(0xff4A90E2)),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          var taskId =
-                              HomeScreenController.todoList[index]['id'];
-                          await HomeScreenController.deleteTasks(taskId);
-                          setState(() {});
-                        },
-                        icon: Icon(Icons.delete, color: Color(0xffE74C3C)),
                       ),
                     ],
                   ),
+                  subtitle:
+                      HomeScreenController.todoList[index]["status"] ==
+                              "completed"
+                          ? SizedBox()
+                          : Row(
+                            children: [
+                              Text(
+                                HomeScreenController.todoList[index]['date'],
+                                style: TextStyle(
+                                  color: Color(0xff666666),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                " • ",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Color(0xff4A90E2),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  HomeScreenController
+                                          .todoList[index]['priority'] ??
+                                      "",
+                                  style: TextStyle(
+                                    color:
+                                        HomeScreenController
+                                                    .todoList[index]['priority'] ==
+                                                "High Priority"
+                                            ? Color(0xff8E44AD)
+                                            : HomeScreenController
+                                                    .todoList[index]['priority'] ==
+                                                "Medium Priority"
+                                            ? Color(0xff9B59B6)
+                                            : HomeScreenController
+                                                    .todoList[index]['priority'] ==
+                                                "Low Priority"
+                                            ? Color(0xffBB8FCE)
+                                            : Colors.grey,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  await _buildBottomSheet(
+                                    context,
+                                    task: HomeScreenController.todoList[index],
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Color(0xff4A90E2),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  var taskId =
+                                      HomeScreenController
+                                          .todoList[index]['id'];
+                                  await HomeScreenController.deleteTasks(
+                                    taskId,
+                                  );
+                                  setState(() {});
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Color(0xffE74C3C),
+                                ),
+                              ),
+                            ],
+                          ),
                 ),
               ),
             ),

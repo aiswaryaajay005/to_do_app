@@ -1,9 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class HomeScreenController {
   static late Database database;
@@ -54,7 +52,7 @@ class HomeScreenController {
   static Future<String> onDateSelection(BuildContext context) async {
     var selectedDate = await showDatePicker(
       context: context,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2025),
       lastDate: DateTime(2030),
     );
     if (selectedDate != null) {
